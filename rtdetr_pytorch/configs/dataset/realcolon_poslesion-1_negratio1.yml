@@ -1,0 +1,35 @@
+task: detection
+
+num_classes: 1
+remap_mscoco_category: True
+
+
+train_dataloader: 
+  type: DataLoader
+  dataset: 
+    type: CocoDetection
+    img_folder: ./dataset/real_colon_dataset_coco_fmt_3subsets_poslesion-1_negratio1/train_images/
+    ann_file: ./dataset/real_colon_dataset_coco_fmt_3subsets_poslesion-1_negratio1/train_ann.json
+    transforms:
+      type: Compose
+      ops: ~
+  shuffle: True
+  batch_size: 32
+  num_workers: 4
+  drop_last: True 
+
+
+val_dataloader:
+  type: DataLoader
+  dataset: 
+    type: CocoDetection
+    img_folder: ./dataset/real_colon_dataset_coco_fmt_3subsets_poslesion-1_negratio1/test_images/
+    ann_file: ./dataset/real_colon_dataset_coco_fmt_3subsets_poslesion-1_negratio1/test_ann.json
+    transforms:
+      type: Compose
+      ops: ~ 
+
+  shuffle: False
+  batch_size: 32
+  num_workers: 4
+  drop_last: False

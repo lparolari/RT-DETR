@@ -1,0 +1,11 @@
+# this is a snippet, use it to create and edit paramtetrs for each run
+
+__include__: [
+  '../dataset/realcolon.yml',  # placehodler
+  '../runtime.yml',
+  './include/dataloader.yml',
+  './include/optimizer.yml',
+  './include/rtdetr_r50vd.yml',
+]
+
+output_dir: ./output/rtdetr_r50vd_6x_realcolon  # update me

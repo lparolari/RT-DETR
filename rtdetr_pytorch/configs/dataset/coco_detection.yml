@@ -3,6 +3,9 @@ task: detection
 num_classes: 80
 remap_mscoco_category: True
 
+# some configurations for the dataloader are only a placeholder and will be
+# overwritten by `configs/rtdetr/include/dataloader.yml` config file.
+
 train_dataloader: 
   type: DataLoader
   dataset: 
