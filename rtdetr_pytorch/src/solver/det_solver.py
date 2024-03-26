@@ -11,7 +11,7 @@ from src.misc import dist
 from src.data import get_coco_api_from_dataset
 
 from .solver import BaseSolver
-from .det_engine import train_one_epoch, evaluate
+from .det_engine import train_one_epoch, evaluate, visualize
 
 
 class DetSolver(BaseSolver):
@@ -89,14 +89,28 @@ class DetSolver(BaseSolver):
         print('Training time {}'.format(total_time_str))
 
 
-    def val(self, ):
+    def test(self, ):
         self.eval()
 
-        base_ds = get_coco_api_from_dataset(self.val_dataloader.dataset)
+        base_ds = get_coco_api_from_dataset(self.test_dataloader.dataset)
         
         module = self.ema.module if self.ema else self.model
         test_stats, coco_evaluator = evaluate(module, self.criterion, self.postprocessor,
-                self.val_dataloader, base_ds, self.device, self.output_dir)
+                self.test_dataloader, base_ds, self.device, self.output_dir)
+                
+        if self.output_dir:
+            dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval.pth")
+        
+        return
+
+    def visualize(self):
+        self.eval()
+
+        base_ds = get_coco_api_from_dataset(self.test_dataloader.dataset)
+        
+        module = self.ema.module if self.ema else self.model
+        test_stats, coco_evaluator = visualize(module, self.criterion, self.postprocessor,
+                self.test_dataloader, base_ds, self.device, self.output_dir)
                 
         if self.output_dir:
             dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval.pth")

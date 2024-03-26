@@ -59,8 +59,8 @@ class BaseSolver(object):
 
     def eval(self, ):
         self.setup()
-        self.val_dataloader = dist.warp_loader(self.cfg.val_dataloader, \
-            shuffle=self.cfg.val_dataloader.shuffle)
+        self.test_dataloader = dist.warp_loader(self.cfg.test_dataloader, \
+            shuffle=self.cfg.test_dataloader.shuffle)
 
         if self.cfg.resume:
             print(f'resume from {self.cfg.resume}')
@@ -178,5 +178,8 @@ class BaseSolver(object):
     def fit(self, ):
         raise NotImplementedError('')
 
-    def val(self, ):
+    def test(self, ):
+        raise NotImplementedError('')
+
+    def visualize(self, ):
         raise NotImplementedError('')

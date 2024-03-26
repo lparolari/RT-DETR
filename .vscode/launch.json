@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "rtdetr",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "tools/train.py",
+            "args": [
+                "-c=configs/runs/rtdetr_debug.yml",
+                "-r=output/r3/checkpoint0053.pth",
+                "--mode=visualize",
+            ],
+            "cwd": "${workspaceFolder}/rtdetr_pytorch",
+            "console": "integratedTerminal"
+        }
+    ]
+}

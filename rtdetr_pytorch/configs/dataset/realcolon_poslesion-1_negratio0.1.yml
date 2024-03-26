@@ -13,10 +13,10 @@ train_dataloader:
     transforms:
       type: Compose
       ops: ~
-  shuffle: True
-  batch_size: 32
-  num_workers: 4
-  drop_last: True 
+  shuffle: ~
+  batch_size: ~
+  num_workers: ~
+  drop_last: ~ 
 
 
 val_dataloader:
@@ -29,7 +29,23 @@ val_dataloader:
       type: Compose
       ops: ~ 
 
-  shuffle: False
-  batch_size: 32
-  num_workers: 4
-  drop_last: False
+  shuffle: ~
+  batch_size: ~
+  num_workers: ~
+  drop_last: ~
+
+
+test_dataloader:
+  type: DataLoader
+  dataset: 
+    type: CocoDetection
+    img_folder: ./dataset/real_colon_dataset_coco_fmt_3subsets_poslesion-1_negratio0.1/test_images/
+    ann_file: ./dataset/real_colon_dataset_coco_fmt_3subsets_poslesion-1_negratio0.1/test_ann.json
+    transforms:
+      type: Compose
+      ops: ~ 
+
+  shuffle: ~
+  batch_size: ~
+  num_workers: ~
+  drop_last: ~
