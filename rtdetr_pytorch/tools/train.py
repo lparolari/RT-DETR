@@ -44,7 +44,7 @@ if __name__ == '__main__':
     parser.add_argument('--resume', '-r', type=str, )
     parser.add_argument('--tuning', '-t', type=str, )
     parser.add_argument('--amp', action='store_true', default=False,)
-    parser.add_argument('--mode', type=str, default=None, required=True, choices=['train', 'test', 'visualize'])
+    parser.add_argument('--mode', type=str, default="train", required=True, choices=['train', 'test', 'visualize'])
 
     args = parser.parse_args()
 
