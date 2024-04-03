@@ -30,6 +30,7 @@ def main(args, ) -> None:
     
     if args.mode == "train":
         solver.fit()
+        solver.test()
     if args.mode == "test":
         solver.test()
     if args.mode == "visualize":
