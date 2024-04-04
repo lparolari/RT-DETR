@@ -11,11 +11,12 @@
             "program": "tools/train.py",
             "args": [
                 "-c=configs/runs/rtdetr_debug.yml",
-                "-r=output/r3/checkpoint0053.pth",
-                "--mode=visualize",
+                // "-r=output/r3/checkpoint0053.pth",
+                "--mode=train",
             ],
             "cwd": "${workspaceFolder}/rtdetr_pytorch",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "justMyCode": false,
         }
     ]
 }
