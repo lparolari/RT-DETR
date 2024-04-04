@@ -41,15 +41,15 @@ class BaseSolver(object):
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
 
-    def train(self, ):
+    def train(self, ckpt_path=None):
         self.setup()
         self.optimizer = self.cfg.optimizer
         self.lr_scheduler = self.cfg.lr_scheduler
+        self.best_stat = {'epoch': -1, }
 
         # NOTE instantiating order
-        if self.cfg.resume:
-            print(f'Resume checkpoint from {self.cfg.resume}')
-            self.resume(self.cfg.resume)
+        if ckpt_path:
+            self.resume(ckpt_path)
 
         self.train_dataloader = dist.warp_loader(self.cfg.train_dataloader, \
             shuffle=self.cfg.train_dataloader.shuffle)
@@ -61,11 +61,6 @@ class BaseSolver(object):
         self.setup()
         self.test_dataloader = dist.warp_loader(self.cfg.test_dataloader, \
             shuffle=self.cfg.test_dataloader.shuffle)
-
-        if self.cfg.resume:
-            print(f'resume from {self.cfg.resume}')
-            self.resume(self.cfg.resume)
-
 
     def state_dict(self, last_epoch):
         '''state dict
@@ -133,8 +128,17 @@ class BaseSolver(object):
 
 
     def resume(self, path):
-        '''load resume
+        '''resume best, last or specific checkpoint
         '''
+        if path == "best":
+            best_epoch = self.best_stat['epoch']
+            path = self.output_dir / f'checkpoint{best_epoch:04}.pth'
+
+        if path == "last":
+            path = self.output_dir / 'checkpoint.pth'
+        
+        print(f'resume from {path}')
+
         # for cuda:0 memory
         state = torch.load(path, map_location='cpu')
         self.load_state_dict(state)

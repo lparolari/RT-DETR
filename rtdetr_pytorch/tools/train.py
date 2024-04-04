@@ -29,12 +29,12 @@ def main(args, ) -> None:
     solver = TASKS[cfg.yaml_cfg['task']](cfg)
     
     if args.mode == "train":
-        solver.fit()
-        solver.test()
+        solver.fit(ckpt_path=cfg.resume)
+        solver.test(ckpt_path="best")
     if args.mode == "test":
-        solver.test()
+        solver.test(ckpt_path=cfg.resume)
     if args.mode == "visualize":
-        solver.visualize()
+        solver.visualize(ckpt_path=cfg.resume)
 
 
 if __name__ == '__main__':
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     parser.add_argument('--resume', '-r', type=str, )
     parser.add_argument('--tuning', '-t', type=str, )
     parser.add_argument('--amp', action='store_true', default=False,)
-    parser.add_argument('--mode', type=str, default="train", required=True, choices=['train', 'test', 'visualize'])
+    parser.add_argument('--mode', type=str, default="train", choices=['train', 'test', 'visualize'])
 
     args = parser.parse_args()
 

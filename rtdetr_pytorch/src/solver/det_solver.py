@@ -27,7 +27,7 @@ class DetSolver(BaseSolver):
 
         base_ds = get_coco_api_from_dataset(self.val_dataloader.dataset)
         # best_stat = {'coco_eval_bbox': 0, 'coco_eval_masks': 0, 'epoch': -1, }
-        best_stat = {'epoch': -1, }
+        best_stat = self.best_stat
 
         start_time = time.time()
         for epoch in range(self.last_epoch + 1, args.epoches):
@@ -88,9 +88,10 @@ class DetSolver(BaseSolver):
         total_time_str = str(datetime.timedelta(seconds=int(total_time)))
         print('Training time {}'.format(total_time_str))
 
-
-    def test(self, ):
+    def test(self, ckpt_path=None):
         self.eval()
+        if ckpt_path:
+            self.resume(ckpt_path)
 
         base_ds = get_coco_api_from_dataset(self.test_dataloader.dataset)
         
@@ -103,8 +104,10 @@ class DetSolver(BaseSolver):
         
         return
 
-    def visualize(self):
+    def visualize(self, ckpt_path=None):
         self.eval()
+        if ckpt_path:
+            self.resume(ckpt_path)
 
         base_ds = get_coco_api_from_dataset(self.test_dataloader.dataset)
         
