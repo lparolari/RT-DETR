@@ -16,9 +16,9 @@ from .det_engine import train_one_epoch, evaluate, visualize
 
 class DetSolver(BaseSolver):
     
-    def fit(self, ):
+    def fit(self, ckpt_path=None):
         print("Start training")
-        self.train()
+        self.train(ckpt_path=ckpt_path)
 
         args = self.cfg 
         

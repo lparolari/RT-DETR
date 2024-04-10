@@ -179,11 +179,11 @@ class BaseSolver(object):
         return matched_state, {'missed': missed_list, 'unmatched': unmatched_list}
 
 
-    def fit(self, ):
+    def fit(self, ckpt_path=None):
         raise NotImplementedError('')
 
-    def test(self, ):
+    def test(self, ckpt_path=None):
         raise NotImplementedError('')
 
-    def visualize(self, ):
+    def visualize(self, ckpt_path=None):
         raise NotImplementedError('')
