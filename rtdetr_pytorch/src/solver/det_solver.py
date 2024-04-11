@@ -84,6 +84,16 @@ class DetSolver(BaseSolver):
                             torch.save(coco_evaluator.coco_eval["bbox"].eval,
                                     self.output_dir / "eval" / name)
 
+            # this is a workaround to avoid working on the config class which is a mess
+            # this callback calls resample_negatives on the training set whenever it exists, no matter what
+            if (
+                hasattr(self.train_dataloader.dataset, "resample_negatives") 
+                and callable(self.train_dataloader.dataset.resample_negatives)
+            ):
+                print('Resample negative samples')
+                self.train_dataloader.dataset.resample_negatives()
+                print(len(self.train_dataloader.dataset))
+
         total_time = time.time() - start_time
         total_time_str = str(datetime.timedelta(seconds=int(total_time)))
         print('Training time {}'.format(total_time_str))
