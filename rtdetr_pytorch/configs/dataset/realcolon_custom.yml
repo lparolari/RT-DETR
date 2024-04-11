@@ -9,6 +9,7 @@ train_dataloader:
     type: RealColonDataset
     img_folder: ./dataset/real_colon_dataset_coco_fmt_3subsets_poslesion-1_negratio1/train_images/
     ann_file: ./dataset/real_colon_dataset_coco_fmt_3subsets_poslesion-1_negratio1/train_ann.json
+    neg_ratio: 0.1
     transforms:
       type: Compose
       ops: ~
