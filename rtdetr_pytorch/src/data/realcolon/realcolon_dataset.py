@@ -41,35 +41,31 @@ class RealColonDataset(torch.utils.data.Dataset):
         return img, anns
 
     def resample_negatives(self):
-        self.ids = {}
         self._build_ids()
 
     def _build_ids(self):
-        self.ids = {}  # idx -> sample id
+        self.ids = []  # idx -> sample id
 
-        idx2posid = {}  # idx -> positive sample id
-        idx2negid = {}  # idx -> negative sample id
+        posid = []
+        negid = []
 
         for i in range(len(self.ds)):
             sample_id = get_id(self.ds, i)
             anns = get_target_ann(self.ds, sample_id)
 
             if len(anns) > 0:
-                idx2posid[i] = sample_id
+                posid.append(sample_id)
             else:
-                idx2negid[i] = sample_id
+                negid.append(sample_id)
 
-        self.ids.update(idx2posid)
+        self.ids.extend(posid)
 
-        # add to ids neg_ratio % of negative, randomly
-        n_neg = int(len(idx2negid) * self.neg_ratio)
-        neg_idx = list(idx2negid.keys())
-        neg_idx = random.sample(neg_idx, len(neg_idx))
-        neg_idx = neg_idx[:n_neg]
+        n_neg = int(len(negid) * self.neg_ratio)
+        n_neg = min(n_neg, len(negid))
 
-        idx2negid = {i: idx2negid[i] for i in neg_idx}
+        negid = random.sample(negid, n_neg)
 
-        self.ids.update(idx2negid)
+        self.ids.extend(negid)
 
 
 def get_id(ds: CocoDetection, idx: int):
