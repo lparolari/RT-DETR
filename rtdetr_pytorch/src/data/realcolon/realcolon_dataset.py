@@ -26,46 +26,42 @@ class RealColonDataset(torch.utils.data.Dataset):
         )
         self.neg_ratio = neg_ratio
 
-        self.ids = None
+        self.indexes = None
 
-        self._build_ids()
+        self._build_indexes()
 
     def __len__(self):
-        return len(self.ids)
+        return len(self.indexes)
 
     def __getitem__(self, idx):
-        sample_id = self.ids[idx]
-        anns = get_target_ann(self.ds, sample_id)
-        img = get_image(self.ds, sample_id)
-
-        return img, anns
+        index = self.indexes[idx]
+        return self.ds[index]
 
     def resample_negatives(self):
-        self._build_ids()
+        self._build_indexes()
 
-    def _build_ids(self):
-        self.ids = []  # idx -> sample id
+    def _build_indexes(self):
+        self.indexes = []  # idx -> sample id
 
-        posid = []
-        negid = []
+        posidx = []
+        negidx = []
 
         for i in range(len(self.ds)):
-            sample_id = get_id(self.ds, i)
-            anns = get_target_ann(self.ds, sample_id)
+            anns = get_target_ann(self.ds, get_id(self.ds, i))
 
             if len(anns) > 0:
-                posid.append(sample_id)
+                posidx.append(i)
             else:
-                negid.append(sample_id)
+                negidx.append(i)
 
-        self.ids.extend(posid)
+        self.indexes.extend(posidx)
 
-        n_neg = int(len(negid) * self.neg_ratio)
-        n_neg = min(n_neg, len(negid))
+        n_neg = int(len(negidx) * self.neg_ratio)
+        n_neg = min(n_neg, len(negidx))
 
-        negid = random.sample(negid, n_neg)
+        negidx = random.sample(negidx, n_neg)
 
-        self.ids.extend(negid)
+        self.indexes.extend(negidx)
 
 
 def get_id(ds: CocoDetection, idx: int):
